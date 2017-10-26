@@ -4,6 +4,8 @@ author: Tonya Ward
 hours: 1
 ---
 
+## Visualizing QIIME data in R
+
 ------------
 
 ## Learning objectives  
@@ -12,9 +14,8 @@ hours: 1
 
 ------------
 
-## Visualizing QIIME data in R
 
-### Loading tables in R 
+## Loading tables in R 
 If you remember we generated 3 types of tables with QIIME:  
 * OTU table (.biom and .txt versions)  
 * Alpha diversity table (.txt)  
@@ -39,7 +40,7 @@ See example of the first 5 lines of an OTU table that is in the required format:
 
 ![alt text](sample_otu.png)
 
-### Loading OTU Table  
+#### Loading OTU Table  
 First, use the function `read.table()` to read in your OTU table. These various arguments are all set specifically for the format of your OTU table in .txt format.  
 
 `comment =` is telling R what should be interpreted as a comment versus as a line of code. The default for this is the pound sign '#' but since we want the column header information we turn off the interpretation of comments using the option `comment = ''`  
@@ -88,7 +89,7 @@ colnames(otu)
 
 Prior to plotting in R, we need to generate an alpha diversity table in QIIME.  This file will be the output of `alpha_diversity.py`, and will be a tab-delimited, plain text file. The format for the alpha diversity file is the following:
 
-### Format
+#### Format
 **Rows** 
 The rows are the sample IDs. 
 
@@ -119,7 +120,8 @@ The rows are the sample IDs.
 **Columns**  
 Each column is also a sample ID and the distances from one sample to another are the values.  
 
-You should have one for each metric you used (Unweighted UniFrac, Weighted UniFrac, and Bray-Curtis).  
+#### Loading Beta Diversity
+You should have one for each metric you used (Unweighted UniFrac, Weighted UniFrac, and Bray-Curtis). We will use the weighted unifrac distance matrix.  
 ```{R}
 # Load the beta diversity matrix, notice that we use read.table(),
 # but then change from a dataframe to a matrix with as.matrix()
@@ -186,7 +188,9 @@ metadata$Genotype
 class(metadata[,'Genotype'])
 ```
 
-### Formatting Your Data
+
+
+## Formatting Your Data
 In order to assess relationships between sample information in our OTU table, alpha diversity and beta diversity, we need to match the order of our data frames. For that we will use the `intersect()` function. Because we have potentially removed one or more samples from our OTU table during rarefaction, filtering or other manipulations, we can first define the subset of samples in all of our tables.  
 
 `intersect()` can retain all the sample IDs that are in the OTU table and also in the metadata file. We can then subset all of our tables to keep just those samples.
@@ -233,6 +237,7 @@ nrow(metadata)
 ```
 
 
+
 ## Alpha Diversity Differences in R
 
 ### Testing for Differences
@@ -256,7 +261,9 @@ wilcox.test(alpha[overweight, "shannon"], alpha[normal, "shannon"])
 
 The p-value here is greater than an alpha of 0.05. This means that we **accept** the null hypothesis that these two body sites are **not significantly different** for this metric of alpha diversity.
 
-We can also see what the box plot looks like.  
+### Plotting the data
+
+We can also see what box plots of the alpha diversity looks like.  
 ```{R, fig.width=6,fig.height=2.5}
 alpha2 <- alpha
 alpha2$BMI_Type <- metadata$BMI_Type
