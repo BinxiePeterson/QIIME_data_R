@@ -15,7 +15,6 @@ hours: 1
 * Format QIIME data in R
 * Plot & test QIIME data in R
 
-------------
 
 ## Loading tables in R 
 If you remember we generated 3 types of tables with QIIME:  
