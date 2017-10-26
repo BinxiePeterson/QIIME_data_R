@@ -137,7 +137,7 @@ __Notice:__
 * We set the rows names to be the first column (These are also sample IDs)  
 
 ### Metadata File   
-Your metadata file (also called a mapping file) is a data table containing information about the samples in your dataset. In order to assess how taxa correlate with variables of interest (e.g. country, body site, species, ecoregion, BMI, etc.), we need to have that information about our samples accessible. The metadata file for our data set is `HMP_metadata.txt`.  
+Your metadata file (also called a mapping file) is a data table containing information about the samples in your dataset. In order to assess how taxa correlate with variables of interest (e.g. country, body site, species, ecoregion, BMI, etc.), we need to have that information about our samples accessible. The metadata file for our data set is `mouse_mapfile.txt`.  
 
 #### Format  
 **Rows**   
