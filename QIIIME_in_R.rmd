@@ -16,6 +16,7 @@ hours: 1
 
 ## Loading tables in R 
 If you remember we generated 3 types of tables with QIIME:  
+
 * OTU table (.biom and .txt versions)  
 * Alpha diversity table (.txt)  
 * Beta diversity tables (.txt)  
@@ -89,11 +90,10 @@ colnames(otu)
 Prior to plotting in R, we need to generate an alpha diversity table in QIIME.  This file will be the output of `alpha_diversity.py`, and will be a tab-delimited, plain text file. The format for the alpha diversity file is the following:
 
 #### Format
-**Rows** 
+**Rows**  
 The rows are the sample IDs. 
 
-**Columns**
-
+**Columns**  
 Each column represents a diversity metric (e.g. `PD_whole_tree`, `simpson`, `shannon`, or `observed_species`). The numbers in each row correspond to alpha diversity estimate for the associated sample. 
 
 #### Loading Alpha Diversity
@@ -107,6 +107,7 @@ alpha <- read.table("alpha_diversity.txt",
                     row=1)
 ```
 __Notice:__  
+
 * We set the header to be the first row (alpha diversity metrics)  
 * We set the rownames to be the first column (sample IDs)  
 
@@ -132,6 +133,7 @@ beta <- as.matrix(read.table("weighted_unifrac_dm.txt",
                              check.names = F))
 ```
 __Notice:__  
+
 * We set the header to be the first row (These are sample IDs)  
 * We set the rows names to be the first column (These are also sample IDs)  
 
@@ -156,6 +158,7 @@ metadata <- read.table('mouse_mapfile.txt',
                        row=1)
 ```
 __Notice:__  
+
 * We set the header to be the first row (These are sample IDs)  
 * We set the rows names to be the first column (These are also sample IDs)  
 * We told R to ignore the '#' in the first line  
@@ -263,7 +266,7 @@ The p-value here is greater than an alpha of 0.05. This means that we **accept**
 ### Plotting the data
 
 We can also see what box plots of the alpha diversity looks like.  
-```{R, fig.width=6,fig.height=2.5}
+```{R, fig.width=6,fig.height=4}
 alpha2 <- alpha
 alpha2$BMI_Type <- metadata$BMI_Type
 
@@ -335,14 +338,14 @@ PCOA <- merge(PCOA, metadata, by = "SampleID")
 
 ### Plotting the PCoA  
 Now you have a data frame that has all of your PCOA vectors and all the relevant metadata, matched up by sample ID. In this example we will plot the first two principal coordinates (PC1 and PC2). If you remember, the first principal coordinates should explain the majority of the variation in the data. These will be pretty simple scatter plots.  
-```{R,fig.width=6,fig.height=2.5}
+```{R,fig.width=6,fig.height=5}
 # Note that geom_point() makes it a scatter plot where the points 
 # are colored according to BodySite
 ggplot(PCOA) + 
   geom_point(aes(x = PC1, y = PC2, color = Source)) + 
   labs(title="PCoA Plot")
 ```
-```{R, fig.width=6,fig.height=2.5}
+```{R, fig.width=6,fig.height=5}
 # Now let's add some clusters.  This makes it look great, but can 
 # also be misleading and make us think there are groups when there 
 # aren't. Note that we are using BodySite to color the points and body 
@@ -355,13 +358,13 @@ ggplot(PCOA) +
 
 ### Changing Plotting Parameters
 The following long command throws a whole pile of customization bells and whistles at ggplot - the fill colors are changed, the points are a bit bigger, the font sizes are bigger. This is just to give you a taste of all the different aesthetic options you can play around with. You should try modifying each parameter and see what it does to the plot.
-```{R, fig.width=6,fig.height=2.5}
+```{R, fig.width=6,fig.height=5}
 colors <- c("darkorchid", "deepskyblue", "darkred", "darkolivegreen")
 colors2 <- c("lightblue", "azure3")
 ggplot(PCOA, aes(x = PC1, y = PC2)) + 
     stat_ellipse(alpha = 0.5, geom="polygon", aes(fill=Source)) + 
     geom_point(alpha=0.65, size = 3, aes(color = Genotype)) + 
-    labs(title="Mouse Microbiome Betadiversity") + 
+    labs(title="Mouse Microbiome Beta Diversity") + 
     scale_color_manual(values= colors) + 
     scale_fill_manual(values=colors2) + 
     theme(plot.title = element_text(size = 16), 
@@ -369,7 +372,7 @@ ggplot(PCOA, aes(x = PC1, y = PC2)) +
           axis.text = element_text(size = 12),
           legend.title = element_text(size = 14),
           legend.text = element_text(size = 12)) + 
-          theme_bw()
+    theme_bw()
 ```
 
 ### Testing for Signifcant Differences  
