@@ -1,3 +1,1 @@
-# QIIME_data_R
-
-#This tutorial is to make some simple plots from the output of QIIME.
+This short tutorial is for loading data from QIIME into R. It also covers some quick plots and stats tests.
