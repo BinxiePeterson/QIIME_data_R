@@ -4,6 +4,7 @@ author: Tonya Ward
 hours: 1
 ---
 
+------------
 ## Visualizing QIIME data in R
 
 ------------
