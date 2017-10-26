@@ -16,29 +16,30 @@ hours: 1
 
 ### Loading tables in R 
 If you remember we generated 3 types of tables with QIIME:  
-* OTU table (.biom and .txt versions)
-* Alpha diversity table (.txt)
-* Beta diversity tables (.txt)
+* OTU table (.biom and .txt versions)  
+* Alpha diversity table (.txt)  
+* Beta diversity tables (.txt)  
 
-#### OTU Table  
+### OTU Table  
 
-##### Format  
+#### Format  
 
-The first two lines include a spacer line detailing how the file was once a .biom format, and the column headers.  Note that these lines start with a '#', which usually represents a comment line (something the computer doesn't read), so we will have to pay attention to how R reads our OTU table.  
+The first two lines include a spacer line detailing how the file was once a .biom format, and the column headers.  Note that these lines start with a '#', which usually represents a comment line (something the computer doesn't read), so we will have to pay attention to how R reads our OTU table.   
 
-**Rows**  
+**Rows**   
 OTU ID, which is a unique ID for each set of sequences that are 97% identical.   
 
-**Columns 1 through the second last**  
-Each column represents a sample. The numbers in each row correspond to the number of reads that mapped to the specified OTU ID in the first column.  
+**Columns 1 through the second last**   
+Each column represents a sample. The numbers in each row correspond to the number of reads that mapped to the specified OTU ID in the first column.    
 
-**Last Column**  
-The assigned taxonomic identity for each OTU (e.g. For k__Bacteria; p__Bacteroidetes; c__Bacteroidia; o__Bacteroidales; f__Prevotellaceae; g__Prevotella; s__copri). k = kingdom, the p = phylum, c = class, o = order, f = family, g = genus and s= species.  
+**Last Column**   
+The assigned taxonomic identity for each OTU (e.g. For k__Bacteria; p__Bacteroidetes; c__Bacteroidia; o__Bacteroidales; f__Prevotellaceae; g__Prevotella; s__copri). k = kingdom, the p = phylum, c = class, o = order, f = family, g = genus and s= species. 
+
 See example of the first 5 lines of an OTU table that is in the required format:   
 
 ![alt text](sample_otu.png)
 
-##### Loading OTU Table  
+### Loading OTU Table  
 First, use the function `read.table()` to read in your OTU table. These various arguments are all set specifically for the format of your OTU table in .txt format.  
 
 `comment =` is telling R what should be interpreted as a comment versus as a line of code. The default for this is the pound sign '#' but since we want the column header information we turn off the interpretation of comments using the option `comment = ''`  
@@ -53,7 +54,7 @@ First, use the function `read.table()` to read in your OTU table. These various 
 
 `check.names =` determines whether the names of variable in the data frame are syntactically valid. Because our sample names in our data set start with numbers, which would cause problems in R, we have to set `check.names=F`  
 
-`row =` will tell R if we would like to set one of the columns to be the row names. In this case we would like to set the first column, which is the OTU IDs to be the row names. (row=1)  
+`row =` will tell R if we would like to set one of the columns to be the row names. In this case we would like to set the first column, which is the OTU IDs to be the row names, `row=1`    
 
 You will have to change the name of the OTU table to be the name of your table.  
 ```{r}
@@ -68,7 +69,7 @@ otu <- read.table("otutable_r10k.txt",
                   row=1)
 ```
 
-To find out information about our table we can use different functions. For example, we can find out the row names and column names using `rownames()` and `colnames()`, respectively. We can find the dimensions with `dim()`, and we can print the first couple of lines (default is 10) with `head()`.  We can also click on our table in the Environment panel to view the whole table.  
+To find out information about our table we can use different functions. For example, we can find out the row names and column names using `rownames()` and `colnames()`, respectively. We can find the dimensions with `dim()`, and we can print the first couple of lines with `head()`.  We can also click on our table in the Environment panel to view the whole table.  
 ```{r, eval=F}
 # View first 2 lines using head()
 head(otu, n=2)
@@ -83,20 +84,19 @@ row.names(otu)
 colnames(otu)
 ```
 
-#### Alpha Diversity File
+### Alpha Diversity File
 
 Prior to plotting in R, we need to generate an alpha diversity table in QIIME.  This file will be the output of `alpha_diversity.py`, and will be a tab-delimited, plain text file. The format for the alpha diversity file is the following:
 
-####Format
-**Rows**
-
+### Format
+**Rows** 
 The rows are the sample IDs. 
 
 **Columns**
 
 Each column represents a diversity metric (e.g. `PD_whole_tree`, `simpson`, `shannon`, or `observed_species`). The numbers in each row correspond to alpha diversity estimate for the associated sample. 
 
-##### Loading Alpha Diversity
+#### Loading Alpha Diversity
 ```{r}
 # Read in the alpha diversity table
 alpha <- read.table("alpha_diversity.txt", 
@@ -110,10 +110,10 @@ __Notice:__
 * We set the header to be the first row (alpha diversity metrics)  
 * We set the rownames to be the first column (sample IDs)  
 
-#### Beta Diversity File  
+### Beta Diversity File  
 Prior to plotting in R, we need to generate an a distance matrix generated by with QIIME. This file will be the output of `beta_diversity.py`, and will be a tab-delimited, plain text file. The format for the beta diversity file is the following:  
 
-##### Format   
+#### Format   
 **Rows**  
 The rows are the sample IDs.   
 **Columns**  
@@ -134,17 +134,17 @@ __Notice:__
 * We set the header to be the first row (These are sample IDs)  
 * We set the rows names to be the first column (These are also sample IDs)  
 
-#### Metadata File   
+### Metadata File   
 Your metadata file (also called a mapping file) is a data table containing information about the samples in your dataset. In order to assess how taxa correlate with variables of interest (e.g. country, body site, species, ecoregion, BMI, etc.), we need to have that information about our samples accessible. The metadata file for our data set is `HMP_metadata.txt`.  
 
-#####Format  
+#### Format  
 **Rows**   
 The actual mapping file starts with '#SampleID' as the first header. This contains a the sample IDs, which are unique IDs for each sample in the dataset. To work in QIIME, this must have a '#' at the start.  Remember that '#' usually represents a comment line (something the computer doesn't read), so we will have to pay attention to how R reads in this file.  
 
 **Columns 1 - last column**  
 Each column represents a description of the sample.  It can be anything including details about the patient, person, animal or location the sample was taken from. This file should contain no spaces or empty columns/rows.  
 
-##### Loading Metadata File  
+#### Loading Metadata File  
 We load the metadata table just like the OTU table, but notice that the `skip` parameter is left out, because the metadata table doesn't have the additional first line that the OTU table has.  
 ```{r, eval=F}
 metadata <- read.table('mouse_mapfile.txt', 
