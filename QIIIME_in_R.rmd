@@ -10,7 +10,9 @@ hours: 1
 
 ## Learning objectives  
 
-* Make simple custom plots in R using QIIME data  
+* Load QIIME outputs into R  
+* Format QIIME data in R
+* Plot & test QIIME data in R
 
 ------------
 
