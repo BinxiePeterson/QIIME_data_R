@@ -1,13 +1,8 @@
 ---
 title: Visualizing QIIME data in R
 author: Tonya Ward
-hours: 3
+hours: 1
 ---
-
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
 
 ------------
 
