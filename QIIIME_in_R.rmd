@@ -14,7 +14,6 @@ hours: 1
 
 ------------
 
-
 ## Loading tables in R 
 If you remember we generated 3 types of tables with QIIME:  
 * OTU table (.biom and .txt versions)  
@@ -58,7 +57,7 @@ First, use the function `read.table()` to read in your OTU table. These various 
 `row =` will tell R if we would like to set one of the columns to be the row names. In this case we would like to set the first column, which is the OTU IDs to be the row names, `row=1`    
 
 You will have to change the name of the OTU table to be the name of your table.  
-```{r}
+```{R}
 # Now we can read in the table - This the the rarefied one
 otu <- read.table("otutable_r10k.txt", 
                   comment="", 
@@ -98,7 +97,7 @@ The rows are the sample IDs.
 Each column represents a diversity metric (e.g. `PD_whole_tree`, `simpson`, `shannon`, or `observed_species`). The numbers in each row correspond to alpha diversity estimate for the associated sample. 
 
 #### Loading Alpha Diversity
-```{r}
+```{R}
 # Read in the alpha diversity table
 alpha <- read.table("alpha_diversity.txt", 
                     sep='\t', 
@@ -148,7 +147,7 @@ Each column represents a description of the sample.  It can be anything includin
 
 #### Loading Metadata File  
 We load the metadata table just like the OTU table, but notice that the `skip` parameter is left out, because the metadata table doesn't have the additional first line that the OTU table has.  
-```{r, eval=F}
+```{R}
 metadata <- read.table('mouse_mapfile.txt', 
                        header=T, 
                        sep='\t', 
@@ -336,14 +335,14 @@ PCOA <- merge(PCOA, metadata, by = "SampleID")
 
 ### Plotting the PCoA  
 Now you have a data frame that has all of your PCOA vectors and all the relevant metadata, matched up by sample ID. In this example we will plot the first two principal coordinates (PC1 and PC2). If you remember, the first principal coordinates should explain the majority of the variation in the data. These will be pretty simple scatter plots.  
-```{R, fig.width=5,fig.height=3.4}
+```{R,fig.width=6,fig.height=2.5}
 # Note that geom_point() makes it a scatter plot where the points 
 # are colored according to BodySite
 ggplot(PCOA) + 
   geom_point(aes(x = PC1, y = PC2, color = Source)) + 
   labs(title="PCoA Plot")
 ```
-```{R, fig.width=5,fig.height=5.5}
+```{R, fig.width=6,fig.height=2.5}
 # Now let's add some clusters.  This makes it look great, but can 
 # also be misleading and make us think there are groups when there 
 # aren't. Note that we are using BodySite to color the points and body 
@@ -356,7 +355,7 @@ ggplot(PCOA) +
 
 ### Changing Plotting Parameters
 The following long command throws a whole pile of customization bells and whistles at ggplot - the fill colors are changed, the points are a bit bigger, the font sizes are bigger. This is just to give you a taste of all the different aesthetic options you can play around with. You should try modifying each parameter and see what it does to the plot.
-```{R, fig.width=5,fig.height=5.5}
+```{R, fig.width=6,fig.height=2.5}
 colors <- c("darkorchid", "deepskyblue", "darkred", "darkolivegreen")
 colors2 <- c("lightblue", "azure3")
 ggplot(PCOA, aes(x = PC1, y = PC2)) + 
