@@ -5,6 +5,7 @@ hours: 1
 ---
 
 ------------
+
 ## Using QIIME data in R
 
 ------------
@@ -23,7 +24,7 @@ If you remember we generated 3 types of tables with QIIME:
 * Alpha diversity table (.txt)  
 * Beta diversity tables (.txt)  
 
-### OTU Table  
+### OTU tables  
 
 #### Format  
 
@@ -42,7 +43,7 @@ Below is a example of the first 5 lines of an OTU table that is in QIIME format:
 
 ![alt text](sample_otu.png)
 
-#### Loading OTU Table  
+#### Loading OTU tables  
 First, use the function `read.table()` to read in your OTU table. These various arguments are all set specifically for the layout of your OTU table in .txt format.  
 
 `comment =` is telling R what should be interpreted as a comment versus as a line of code. The default for this is the pound sign '#' but since the column header line has this, we turn off the interpretation of comments using the option `comment = ''`  
@@ -86,7 +87,7 @@ row.names(otu)
 colnames(otu)
 ```
 
-### Alpha Diversity File
+### Alpha diversity tables
 
 Prior to plotting in R, we generated an alpha diversity table in QIIME.  This file is the output of `alpha_diversity.py`, and is a tab-delimited, plain text file. The format for the alpha diversity file is the following:
 
@@ -97,7 +98,7 @@ The rows are the sample IDs.
 **Columns**  
 Each column represents a diversity metric (e.g. `PD_whole_tree`, `simpson`, `shannon`, or `observed_species`). The numbers in each row correspond to alpha diversity estimate for the associated sample. 
 
-#### Loading Alpha Diversity
+#### Loading alpha diversity tables
 ```{R}
 # Read in the alpha diversity table
 alpha <- read.table("alpha_diversity.txt", 
@@ -112,7 +113,7 @@ __Notice:__
 * We set the header to be the first row (alpha diversity metrics)  
 * We set the rownames to be the first column (sample IDs)  
 
-### Beta Diversity File  
+### Beta diversity tables  
 Prior to plotting in R, we generated distance matrices with QIIME. These file are the output of `beta_diversity.py`, and are tab-delimited, plain text files. The format for a beta diversity file is the following:  
 
 #### Format   
@@ -121,7 +122,7 @@ The rows are the sample IDs.
 **Columns**  
 Each column is also a sample ID and the distances from one sample to another are the values.  
 
-#### Loading Beta Diversity
+#### Loading beta diversity tables
 You should have one for each metric you used (Unweighted UniFrac, Weighted UniFrac, and Bray-Curtis). We will use the weighted unifrac distance matrix.  
 ```{R}
 # Load the beta diversity matrix, notice that we use read.table(),
@@ -139,7 +140,7 @@ __Notice:__
 * We set the rows names to be the first column (These are also sample IDs)  
 * We changed the beta diversity data frame to a matrix
 
-### Metadata File   
+### Metadata files   
 Your metadata file (also called a mapping file) is a data table containing information about the samples in your dataset. In order to assess how taxa correlate with variables of interest (e.g. body site, genotype, source, BMI, etc.), we need to have that information about our samples accessible. The metadata file for our data set is `mouse_mapfile.txt`.  
 
 #### Format  
@@ -149,7 +150,7 @@ The actual mapping file starts with '#SampleID' as the first header. This contai
 **Columns 1 - last column**  
 Each column represents a description of the sample.  It can be anything including details about the patient, person, animal or location the sample was taken from. This file should contain **no spaces or special characters**.  
 
-#### Loading Metadata File  
+#### Loading metadata files
 We load the metadata table just like the OTU table, but notice that the `skip` parameter is left out, because the metadata table doesn't have the additional first line that the OTU table has.  
 ```{R}
 metadata <- read.table('mouse_mapfile.txt', 
@@ -194,7 +195,7 @@ class(metadata[,'Genotype'])
 
 
 
-## Formatting Your Data
+## Formatting the data
 In order to assess relationships between sample information in our OTU table, alpha diversity and beta diversity, we need to match the order of our data frames. For that we will use the `intersect()` function. Because we have potentially removed one or more samples from our OTU table during rarefaction, filtering, or other manipulations, we can first define the subset of samples in all of our tables.  
 
 `intersect()` can retain all the sample IDs that are in the OTU table and also in the metadata file. We can then subset all of our tables to keep just those samples.
@@ -239,15 +240,15 @@ nrow(metadata)
 
 
 
-## Alpha Diversity Differences in R
+## Alpha diversity differences in R
 
-### Testing for Differences
+### Testing for differences
 
 #### *t*-Tests  
 A *t*-test can be used to determine if two sets of data are significantly different from each other based on the population means. It assumes the data are normally distributed. Although it is typically assumed that data of a large enough sample size are normally distributed, this is not always the case.
 
 
-#### Mann-Whitney U Test
+#### Mann-Whitney U test
 
 The Mann-Whitney U test (aka Wilcoxen-rank_sum test) is smilar to the *t*-test, but it does not require the data to be normally distrubuted. The null hypothesis of this test would be that that groups means differ only by chance. We can do a Mann-Whitney U test using the `wilcox.test()` function in R.
 
@@ -265,9 +266,9 @@ The p-value here is greater than an alpha of 0.05. This means that we **accept**
 
 An ANOVA is similar to a t-test, but we can use it on more than 2 sample groups at a time. It also requires the data to be normally distrubuted. The null hypothesis of this test would be that that groups means differ only by chance. We can do an ANOVA test using the `aov()` function in R.   
 
-#### ANOVA
+#### Kruskal Wallis test
 
-A Kruskal Wallace test is similar to an ANOVA, but the data do not have to be normally distributed. We can do Kruskal Wallace test using the `kruskal.test()` function in R.  
+A Kruskal Wallis test is similar to an ANOVA, but the data do not have to be normally distributed. We can do Kruskal Wallis test using the `kruskal.test()` function in R.  
 
 Let's use this test to see if there is a difference between the genotypes:
 ```{R}
@@ -320,7 +321,7 @@ library(ggplot2)
 ```
 
 
-### Principal Coordinates Analysis  
+### Principal coordinates analysis  (PCoA)
 Now we can use the function `pcoa()` from the R package `ape` to actually calculate our principal coordinate vectors. To make plotting easier, we save the vectors as a data frame, set up new column titles, and add a column of sample IDs.  
 ```{R}
 # Run the pcoa() function on the beta diversity table,
@@ -372,7 +373,7 @@ ggplot(PCOA) +
   stat_ellipse(alpha = 0.3, geom="polygon", linetype="blank", aes(x = PC1, y = PC2, fill = Source))
 ```
 
-### Changing Plotting Parameters
+### Changing plotting parameters
 The following long command throws a whole pile of customization bells and whistles at ggplot - the fill colors are changed, the points are a bit bigger, the font sizes are bigger. This is just to give you a taste of all the different aesthetic options you can play around with. You should try modifying each parameter and see what it does to the plot.
 ```{R, fig.width=6,fig.height=5}
 colors <- c("darkorchid", "deepskyblue", "darkred", "darkolivegreen")
@@ -391,7 +392,7 @@ ggplot(PCOA, aes(x = PC1, y = PC2)) +
     theme_bw()
 ```
 
-### Testing for Signifcant Differences  
+### Testing for signifcant differences  
 
 #### adonis  
 **adonis** is a non-parametric statistical test, and uses permutations of the data to determine the p-value, or statistical significance.  
