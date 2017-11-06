@@ -147,7 +147,7 @@ library(ggplot2)
 
 ggplot(data=alpha2, aes(x=BMI_Type, y= shannon)) + 
   geom_boxplot(outlier.color = NA) + # removes outlier points becuase we add in the jitter anyways
-  geom_jitter(width= 0.1, aes(color=BMI_Type)) +
+  geom_jitter(width= 0.1, aes(color=BMI_Type), alpha=0.5) +
   theme_bw() +
   guides(color=F) #because the x-axis is already labeled
 
