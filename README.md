@@ -11,4 +11,4 @@ This tutorial shows you how to:
 *	Plot alpha and beta diversity
 *	Run basic stats
 
-You can follow easily follow the QIIME_data_R.rmd by clicking it and viewing in a browswer. There is also a commands.r file with all the r code ready for R studio.
+You can follow the QIIME_data_R.rmd file by clicking it and viewing in a browser. There is also a commands.r file with all the r code ready for R studio.
