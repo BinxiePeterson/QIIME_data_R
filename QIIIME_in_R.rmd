@@ -425,4 +425,3 @@ a.table <- ad$aov.tab
 # This writes it to a file
 write.table(a.table, file="beta_analysis.txt", quote=FALSE, sep="\t", col.names = NA)
 ```
-
